@@ -47,6 +47,32 @@ class DemoBxmSpider(scrapy.Spider):
                   'https://vnexpress.net/7-thuc-pham-tot-cho-nguoi-benh-viem-xoang-4670701.html',
                   'https://vnexpress.net/nguyen-nhan-kho-mui-4670163.html',
                   'https://vnexpress.net/5-loai-tra-giup-giam-nghet-mui-4667503.html',
+                  'https://vnexpress.net/dau-hieu-nhiem-ky-sinh-trung-tai-mui-hong-4559846.html',
+                  'https://vnexpress.net/viem-xoang-co-lay-khi-thoi-tiet-lanh-4550783.html',
+                  'https://vnexpress.net/8-trieu-chung-canh-bao-mac-nhiem-trung-xoang-4548151.html',
+                  'https://vnexpress.net/viem-xoang-do-nam-4545696.html',
+                  'https://vnexpress.net/cach-xu-tri-viem-xoang-tai-phat-mua-lanh-4544208.html',
+                  'https://vnexpress.net/chay-mau-cam-do-di-ung-4542679.html',
+                  'https://vnexpress.net/cac-bai-tap-tho-tot-cho-mui-4542459.html',
+                  'https://vnexpress.net/xu-tri-nghet-mui-cho-tre-dung-cach-4541909.html',
+                  'https://vnexpress.net/5-sai-lam-can-tranh-khi-tu-dieu-tri-nhiem-trung-xoang-4539447.html',
+                  'https://vnexpress.net/4-loai-thuc-pham-nguoi-benh-viem-xoang-nen-han-che-4538012.html',
+                  'https://vnexpress.net/cach-xu-ly-mun-moc-o-mui-4537368.html',
+                  'https://vnexpress.net/cach-xu-ly-mun-moc-o-mui-4537368.html',
+                  'https://vnexpress.net/dau-khi-nhai-canh-bao-sau-rang-ung-thu-mieng-4537269.html',
+                  'https://vnexpress.net/cach-cai-thien-di-ung-mui-4534791.html',
+                  'https://vnexpress.net/hut-thuoc-la-gay-hai-cho-mui-xoang-4534212.html',
+                  'https://vnexpress.net/co-nen-dung-nuoc-muoi-rua-mui-cho-tre-keo-dai-4533758.html',
+                  'https://vnexpress.net/viem-mui-khi-mang-thai-4532926.html',
+                  'https://vnexpress.net/8-nguyen-nhan-gay-ngua-mui-4530918.html',
+                  'https://vnexpress.net/nguyen-nhan-gay-chay-dich-mui-sau-4513778.html',
+                  'https://vnexpress.net/8-meo-giup-de-ngu-khi-bi-nghet-mui-4512537.html',
+                  'https://vnexpress.net/5-cach-giup-giam-so-mui-4511128.html',
+                  'https://vnexpress.net/8-meo-giup-cai-thien-ngua-mui-4506675.html',
+                  'https://vnexpress.net/4-cach-giam-trieu-chung-viem-xoang-tai-nha-4506258.html',
+                  'https://vnexpress.net/chay-mau-cam-do-cang-thang-4506556.html',
+                  'https://vnexpress.net/cach-giam-nghet-mui-don-gian-tai-nha-4501045.html',
+                  'https://vnexpress.net/cach-xong-hoi-bang-thao-moc-giup-thong-mui-4496788.html',
                   ]
 
     def parse(self, response):
@@ -56,12 +82,13 @@ class DemoBxmSpider(scrapy.Spider):
             'content': ''.join(response.css('article.fck_detail p::text').getall()), # ghép các đoạn văn lại
             'author': response.css('p strong::text').get(),
             'date': response.css('span.date::text').get(),
+            'location': response.css('span.location-stamp::text').get(),
             'url': response.url,
         }
 
         # Save the extracted data to a CSV file
         with open('BenhXoangMui.csv', 'a', newline='', encoding='utf-8') as csvfile:
-            fieldnames = ['title', 'content', 'author', 'date', 'url']
+            fieldnames = ['title', 'content', 'author', 'date', 'location', 'url']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             if csvfile.tell() == 0:
