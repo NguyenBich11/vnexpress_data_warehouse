@@ -1,6 +1,5 @@
 import scrapy
 import csv
-
 class HoHapThuongGapSpider(scrapy.Spider):
     name = "Ho_Hap_Thuong_Gap"
     allowed_domains = ["vnexpress.net"]
@@ -76,22 +75,25 @@ class HoHapThuongGapSpider(scrapy.Spider):
         'https://vnexpress.net/dau-hieu-nhiem-virus-hop-bao-ho-hap-4714592.html',
         'https://vnexpress.net/viem-trang-phoi-sau-chuyen-leo-nui-4708745.html'
     ]
-
     def parse(self, response):
         # Extract data from the webpage
         data = {
-            'title': response.css('h1.title-detail::text').get(),
-            'content': ''.join(response.css('article.fck_detail p::text').getall()), # ghép các đoạn văn lại
-            'author': response.css('p strong::text').get(),
-            'date': response.css('span.date::text').get(),
+            #'article_id': response.css('meta[property="og:url"]::attr(content)').get(default='N/A').split('/')[-1],
+            'title': response.css('h1.title-detail::text').get(default='N/A'),
+            'content': ''.join(response.css('article.fck_detail p::text').getall()),
+            'author': response.css('p strong::text').get(default='N/A'),
+            'date': response.css('span.date::text').get(default='N/A'),
+            'location': response.css('span.location-stamp::text').get(),
             'url': response.url,
+            #'count_comments':response.css('label#total_comment::text').get()
         }
 
         # Save the extracted data to a CSV file
         with open('HoHapThuongGap.csv', 'a', newline='', encoding='utf-8') as csvfile:
-            fieldnames = ['title', 'content', 'author', 'date', 'url']
+            fieldnames = ['title', 'content', 'author', 'date', 'location', 'url']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
+            # Write header only if the file is empty
             if csvfile.tell() == 0:
                 writer.writeheader()
 

@@ -25,12 +25,13 @@ class PhatHienSomSpider(scrapy.Spider):
             'content': ''.join(response.css('article.fck_detail p::text').getall()), # ghép các đoạn văn lại
             'author': response.css('p strong::text').get(),
             'date': response.css('span.date::text').get(),
+            'location': response.css('span.location-stamp::text').get(),
             'url': response.url,
         }
 
         # Save the extracted data to a CSV file
         with open('PhatHienSom.csv', 'a', newline='', encoding='utf-8') as csvfile:
-            fieldnames = ['title', 'content', 'author', 'date', 'url']
+            fieldnames = ['title', 'content', 'author', 'date', 'location','url']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             if csvfile.tell() == 0:
