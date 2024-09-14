@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Scrapy settings for vnexpress_data_warehouse project
 #
 # For simplicity, this file contains only settings considered important or
