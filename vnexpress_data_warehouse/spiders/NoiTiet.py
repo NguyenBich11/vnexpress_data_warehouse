@@ -67,8 +67,7 @@ class NoitietSpider(scrapy.Spider):
         'https://vnexpress.net/4-lam-tuong-ve-bo-sung-noi-tiet-to-4454353.html',
         'https://vnexpress.net/5-cach-can-bang-noi-tiet-to-de-tang-kha-nang-thu-thai-4438878.html',
         'https://vnexpress.net/nguyen-nhan-gay-roi-loan-noi-tiet-to-kho-thu-thai-4437365.html',
-        'https://vnexpress.net/lieu-phap-noi-tiet-chua-khoi-ung-thu-vu-ma-khong-can-hoa-tri-3786452.html',
-        
+        'https://vnexpress.net/lieu-phap-noi-tiet-chua-khoi-ung-thu-vu-ma-khong-can-hoa-tri-3786452.html'
     ]
 
     def parse(self, response):
