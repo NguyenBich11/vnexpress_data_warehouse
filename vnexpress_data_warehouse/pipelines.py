@@ -2,12 +2,59 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-
-
+import scrapy
+import pymongo
+import json
+# from bson.objectid import ObjectId
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from scrapy.exceptions import DropItem
+import csv
+import os
 
-
-class VnexpressDataWarehousePipeline:
+class MongoDBVnexpressDataWarehousePipeline:
+    def __init__(self):
+        # Connection String
+        econnect = str(os.environ['Mongo_HOST'])
+        #self.client = pymongo.MongoClient('mongodb://mymongodb:27017')
+        self.client = pymongo.MongoClient('mongodb://'+econnect+':27017')
+        self.db = self.client['vnexpressdatawarehouse'] #Create Database      
+        pass
+    
     def process_item(self, item, spider):
+        
+        collection =self.db['tblVnexpress'] #Create Collection or Table
+        try:
+            collection.insert_one(dict(item))
+            return item
+        except Exception as e:
+            raise DropItem(f"Error inserting item: {e}")       
+        pass
+
+class JsonDBVnexpressDataWarehousePipeline:
+    def process_item(self, item, spider):
+        with open('jsondatavnexpress.json', 'a', encoding='utf-8') as file:
+            line = json.dumps(dict(item), ensure_ascii=False) + '\n'
+            file.write(line)
         return item
+
+class CSVDBVnexpressDataWarehousePipeline:
+    '''
+    mỗi thông tin cách nhau với dấu $
+    Ví dụ: coursename$lecturer$intro$describe$courseUrl
+    Sau đó, cài đặt cấu hình để ưu tiên Pipline này đầu tiên
+    '''
+    def process_item(self, item, spider):
+        with open('csvdatavnexpress.csv', 'a', encoding='utf-8', newline='') as file:
+            writer = csv.writer(file, delimiter='$')
+            writer.writerow([
+                item['title'],
+                item['content'],
+                item['author'],
+                item['date'],
+                item['location'],
+                item['disease_name'],
+                item['url'],
+            ])
+        return item
+    pass

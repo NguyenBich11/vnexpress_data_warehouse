@@ -1,5 +1,6 @@
 import scrapy
-import csv
+# import os
+from vnexpress_data_warehouse.items import VnexpressDataWarehouseItem 
 class TonghopData_CacbenhSpider(scrapy.Spider):
     name = "TonghopData_Cacbenh"
     allowed_domains = ["vnexpress.net"]
@@ -1285,30 +1286,19 @@ class TonghopData_CacbenhSpider(scrapy.Spider):
         "https://vnexpress.net/5-loai-mat-na-giam-nep-nhan-4714342.html",
         "https://vnexpress.net/triet-long-co-hieu-qua-vinh-vien-khong-4714122.html",
     ]
+                          
     def parse(self, response):
-        # Extract data from the webpage
-        data = {
-            #'article_id': response.css('meta[property="og:url"]::attr(content)').get(default='N/A').split('/')[-1],
-            'title': response.css('h1.title-detail::text').get(default='N/A'),
-            'content': ''.join(response.css('article.fck_detail p::text').getall()),
-            'author': response.css('div.sidebar-1 > article.fck_detail  > p.Normal:last-child > strong::text').get(default='N/A'),
-            'date': response.css('span.date::text').get(default='N/A'),
-            'location': response.css('span.location-stamp::text').get(),
-            'disease_name': response.css('body > section.section.page-detail.top-detail > div > div.sidebar-1 > div.header-content.width_common > ul > li:nth-child(3) > a::text').get(),
-            'url': response.url
-            #'count_comments':response.css('label#total_comment::text').get()
-        }
-
-        # Save the extracted data to a CSV file
-        with open('TonghopData_Cacbenh.csv', 'a', newline='', encoding='utf-8') as csvfile:
-            fieldnames = ['title', 'content', 'author', 'date', 'location','disease_name', 'url']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-            # Write header only if the file is empty
-            if csvfile.tell() == 0:
-                writer.writeheader()
-
-            writer.writerow(data)
+        item = VnexpressDataWarehouseItem()
+        #'article_id': response.css('meta[property="og:url"]::attr(content)').get(default='N/A').split('/')[-1],
+        item['title'] = response.css('h1.title-detail::text').get(default='N/A')
+        item['content'] = ''.join(response.css('article.fck_detail p::text').getall())
+        item['author'] = response.css('div.sidebar-1 > article.fck_detail  > p.Normal:last-child > strong::text').get(default='N/A')
+        item['date'] = response.css('span.date::text').get(default='N/A')
+        item['location'] = response.css('span.location-stamp::text').get()
+        item['disease_name'] = response.css('body > section.section.page-detail.top-detail > div > div.sidebar-1 > div.header-content.width_common > ul > li:nth-child(3) > a::text').get()
+        item['url'] = response.url
+        #'count_comments':response.css('label#total_comment::text').get()
+        yield item
 
         # Follow the next page link (if exists)
         next_page = response.css('.next a::attr(href)').get()
