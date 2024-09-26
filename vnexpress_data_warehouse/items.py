@@ -8,11 +8,11 @@ import scrapy
 
 class VnexpressDataWarehouseItem(scrapy.Item):
     title = scrapy.Field()
-    description = scrapy.Field()
-    content = scrapy.Field()
     author = scrapy.Field()
     date = scrapy.Field()
     location = scrapy.Field()
     disease_name = scrapy.Field()
-    url = scrapy.Field()
+    count_comment = scrapy.Field()
+    total_like = scrapy.Field()
+    content = scrapy.Field()
     

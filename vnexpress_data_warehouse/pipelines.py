@@ -41,17 +41,17 @@ class JsonDBVnexpressDataWarehousePipeline:
 class CSVDBVnexpressDataWarehousePipeline:
     def process_item(self, item, spider):
         with open('csvdatavnexpress.csv', 'a', encoding='utf-8', newline='') as file:
-            fieldnames = ['title', 'description', 'content', 'author', 'date', 'location','disease_name', 'url']
+            fieldnames = ['title', 'author', 'date', 'location','disease_name', 'count_comment', 'total_like', 'content', ]
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writerow([
                 item['title'],
-                item['description'],
-                item['content'],
                 item['author'],
                 item['date'],
                 item['location'],
                 item['disease_name'],
-                item['url'],
+                item['count_comment'],
+                item['total_like'],
+                item['content'],
             ])
         return item
     pass
