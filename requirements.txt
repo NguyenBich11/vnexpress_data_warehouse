@@ -2,3 +2,5 @@
 Scrapy
 pymongo
 itemadapter
+pandas
+numpy

@@ -1291,6 +1291,7 @@ class TonghopData_CacbenhSpider(scrapy.Spider):
         item = VnexpressDataWarehouseItem()
         #'article_id': response.css('meta[property="og:url"]::attr(content)').get(default='N/A').split('/')[-1],
         item['title'] = response.css('h1.title-detail::text').get(default='N/A')
+        item['description'] = response.css('div.sidebar-1 > p.description::text').get(default='N/A')
         item['content'] = ''.join(response.css('article.fck_detail p::text').getall())
         item['author'] = response.css('div.sidebar-1 > article.fck_detail  > p.Normal:last-child > strong::text').get(default='N/A')
         item['date'] = response.css('span.date::text').get(default='N/A')

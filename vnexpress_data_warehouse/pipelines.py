@@ -39,16 +39,13 @@ class JsonDBVnexpressDataWarehousePipeline:
         return item
 
 class CSVDBVnexpressDataWarehousePipeline:
-    '''
-    mỗi thông tin cách nhau với dấu $
-    Ví dụ: coursename$lecturer$intro$describe$courseUrl
-    Sau đó, cài đặt cấu hình để ưu tiên Pipline này đầu tiên
-    '''
     def process_item(self, item, spider):
         with open('csvdatavnexpress.csv', 'a', encoding='utf-8', newline='') as file:
-            writer = csv.writer(file, delimiter='$')
+            fieldnames = ['title', 'description', 'content', 'author', 'date', 'location','disease_name', 'url']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writerow([
                 item['title'],
+                item['description'],
                 item['content'],
                 item['author'],
                 item['date'],
