@@ -1,5 +1,8 @@
 import csv
 import scrapy
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 class DemoBvtSpider(scrapy.Spider):
     name = "Demo_BVT"
@@ -87,17 +90,21 @@ class DemoBvtSpider(scrapy.Spider):
     def parse(self, response):
         # Extract data from the webpage
         data = {
+            
             'title': response.css('h1.title-detail::text').get(),
             'content': ''.join(response.css('article.fck_detail p::text').getall()), # ghép các đoạn văn lại
             'author': response.css('p strong::text').get(),
             'date': response.css('span.date::text').get(),
             'location': response.css('span.location-stamp::text').get(),
             'url': response.url,
+            'comments': response.css('div#box_comment div.content_comment p::text').getall(),
+            
+
         }
 
         # Save the extracted data to a CSV file
         with open('BenhVeTai.csv', 'a', newline='', encoding='utf-8') as csvfile:
-            fieldnames = ['title', 'content', 'author', 'date', 'location', 'url']
+            fieldnames = ['title', 'content', 'author', 'date', 'location', 'url','comments']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             if csvfile.tell() == 0:
