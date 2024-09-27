@@ -11,8 +11,8 @@ BOT_NAME = "vnexpress_data_warehouse"
 
 SPIDER_MODULES = ["vnexpress_data_warehouse.spiders"]
 NEWSPIDER_MODULE = "vnexpress_data_warehouse.spiders"
-
-
+RETRY_TIMES = 10
+#ROBOTSTXT_OBEY = False
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "vnexpress_data_warehouse (+http://www.yourdomain.com)"
 
