@@ -1,14 +1,11 @@
-FROM python:3.10
+FROM python:3.9
 
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
-RUN apt-get update && apt-get install -y python3-pip
-RUN pip install --upgrade pip
-RUN pip install scrapy selenium webdriver-manager
-# RUN pip install chromedriver-py
-RUN pip install pymongo
+RUN apt-get update && apt-get install -y python3-pip \
+    && pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
 # Install Chrome and ChromeDriver
 RUN apt-get update && apt-get install -y wget gnupg unzip \
@@ -24,3 +21,4 @@ COPY . .
 ENV PYTHONUNBUFFERED=1
 
 CMD ["sh", "-c", "sleep 60 && python -m scrapy runspider vnexpress_data_warehouse/spiders/BenhTimMach.py"]
+
