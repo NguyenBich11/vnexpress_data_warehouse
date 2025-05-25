@@ -7,6 +7,12 @@ import scrapy
 
 
 class VnexpressDataWarehouseItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    title = scrapy.Field()
+    author = scrapy.Field()
+    date = scrapy.Field()
+    location = scrapy.Field()
+    disease_name = scrapy.Field()
+    count_comment = scrapy.Field()
+    total_like = scrapy.Field()
+    content = scrapy.Field()
+    
